@@ -221,7 +221,6 @@ services:
     hostname: txmanager1
     ports:
       - "9081:9080"
-      - "9000:9000"
     volumes:
       - vol1_tm:/qdata/tm
       - vol1_tm_ipc:/qdata/tm_ipc

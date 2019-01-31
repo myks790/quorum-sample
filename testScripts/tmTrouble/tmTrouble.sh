@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 echo "1 -> 7로 private contract 생성 된 후"
 echo "7번 노드의 tm 데이터가 삭제 됬을 때"
 echo " "

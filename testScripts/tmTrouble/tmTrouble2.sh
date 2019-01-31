@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 echo "7번 tm이 중지된 상태일때"
 echo "1 -> 7로 private contract 생성 될 경우"
 echo " "
