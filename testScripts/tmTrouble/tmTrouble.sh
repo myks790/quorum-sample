@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo "1 -> 7로 private contract 생성 된 후"
-echo "7번 노드의 tm 데이터가 삭제 됬을 때 => 복구 안됨"
+echo "7번 노드의 tm 데이터가 삭제 됬을 때 => 복구됨"
 echo " "
 
 echo "private contract 생성"
@@ -31,13 +31,15 @@ echo "7번 tm data 삭제"
 docker exec -it istanbul_txmanager7_1 /bin/sh \
     -c "cd qdata/tm
         rm ./*.db"
-
+echo "sleep 3"
+sleep 3
 echo "7번 tm과 노드 restart"
 docker restart istanbul_txmanager7_1 > /dev/null
+echo "sleep 50"
+sleep 50
 docker restart istanbul_node7_1 > /dev/null
-
-echo "sleep 30"
-sleep 30
+echo "sleep 60"
+sleep 60
 
 echo "삭제후 data -----------------------------"
 echo "node1 data"
