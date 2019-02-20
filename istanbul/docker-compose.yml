@@ -73,6 +73,7 @@ x-tx-manager-def:
   expose:
     - "9000"
     - "9080"
+    - "8082"
   restart: "no"
   healthcheck:
     test: ["CMD-SHELL", "[ -S /qdata/tm/tm.ipc ] || exit 1"]
@@ -391,6 +392,7 @@ services:
     hostname: txmanager6
     ports:
       - "9086:9080"
+      - "8083:8082"
     volumes:
       - vol6_tm:/qdata/tm
       - vol6_tm_ipc:/qdata/tm_ipc
@@ -425,6 +427,7 @@ services:
     hostname: txmanager7
     ports:
       - "9087:9080"
+      - "8082:8082"
     volumes:
       - vol7_tm:/qdata/tm
       - vol7_tm_ipc:/qdata/tm_ipc
