@@ -6,15 +6,10 @@ import "openzeppelin-solidity/contracts/token/ERC20/ERC20Burnable.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20Mintable.sol";
 
 contract RayToken is ERC20, ERC20Detailed, ERC20Burnable, ERC20Mintable {
-    constructor(
-        string memory name,
-        string memory symbol,
-        uint8 decimals
-    )
+    constructor(string memory name, string memory symbol, uint8 decimals)
     ERC20Burnable()
     ERC20Mintable()
     ERC20Detailed(name, symbol, decimals)
     ERC20()
-    public
-    {}
+    public {}
 }
