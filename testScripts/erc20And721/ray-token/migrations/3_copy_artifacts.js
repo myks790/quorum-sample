@@ -1,6 +1,8 @@
 const RayToken = artifacts.require("RayToken");
 const Ray721Token = artifacts.require("Ray721Token");
 const MyCrowdsale = artifacts.require("MyCrowdsale");
+const Market = artifacts.require("Market");
+
 const shell = require('child_process').execSync;
 
 const src = `./../build/contracts`;
@@ -16,7 +18,8 @@ module.exports = function (deployer) {
         "{" +
             "\"RayToken\":\"" + RayToken.address + "\"," +
             "\"Ray721Token\":\"" + Ray721Token.address + "\"," +
-            "\"MyCrowdsale\":\"" + MyCrowdsale.address + "\"" +
+            "\"MyCrowdsale\":\"" + MyCrowdsale.address + "\"," +
+            "\"Market\":\"" + Market.address + "\"" +
         "}",
         function (err) {
             console.log(err)

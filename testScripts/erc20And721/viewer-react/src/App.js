@@ -1,10 +1,15 @@
 import React, {Component} from 'react';
-import Web3 from 'web3';
+import NodeComponent from "./components/NodeComponent";
 
-const ContractsAddress = require('./contracts/ContractsAddress.json');
-const RayToken = require('./contracts/RayToken.json');
-const MyCrowdsale = require('./contracts/MyCrowdsale.json');
-const Ray721Token = require('./contracts/Ray721Token.json');
+const accountInfo = {
+    account1: {addr: '0xed9d02e382b34818e88B88a309c7fe71E65f419d', url: 'http://localhost:22000'},
+    account2: {addr: '0xca843569e3427144cead5e4d5999a3d0ccf92b8e', url: 'http://localhost:22001'},
+    account3: {addr: '0x0fbdc686b912d7722dc86510934589e0aaf3b55a', url: 'http://localhost:22002'},
+    account4: {addr: '0x9186eb3d20cbd1f5f992a950d808c4495153abd5', url: 'http://localhost:22003'},
+    account5: {addr: '0x0638e1574728b6d862dd5d3a3e0942c3be47d996', url: 'http://localhost:22004'},
+    account6: {addr: '0xae9bc6cd5145e67fbd1887a5145271fd182f0ee7', url: 'http://localhost:22005'},
+    account7: {addr: '0xcc71c7546429a13796cf1bf9228bff213e7ae9cc', url: 'http://localhost:22006'}
+};
 
 class App extends Component {
     state = {
@@ -12,56 +17,24 @@ class App extends Component {
     };
 
     constructor(props) {
-        super(props)
-        this.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:22001"));
-        this.ray721Token = new this.web3.eth.Contract(Ray721Token.abi, ContractsAddress.Ray721Token);
-        this.rayToken = new this.web3.eth.Contract(RayToken.abi, ContractsAddress.RayToken);
-        this.crowdsale = new this.web3.eth.Contract(MyCrowdsale.abi,ContractsAddress.MyCrowdsale);
+        super(props);
+
     }
 
     componentDidMount() {
-    }
 
-    onClickRunBtn = () =>{
-        this.web3.eth.getAccounts((error, addrs) => {
-            this.setState({accounts:addrs});
-
-            this.web3.eth.getBalance(addrs[0]).then((balance) => {
-                this.setState({
-                    balance: balance
-                });
-            });
-            this.rayToken.methods.totalSupply().call({from: addrs[0]}, (err, res) => {
-                this.setState({
-                    totalSupply: res
-                });
-            });
-            this.rayToken.methods.balanceOf(addrs[0]).call( {from: addrs[0]}, (err, res) => {
-                this.setState({
-                    tokenBalance: res
-                });
-            });
-            this.crowdsale.methods.mintOnce().send({from: addrs[0]});
-
-            this.ray721Token.methods.createToken("http://test.json").send({from: addrs[0], gas:300000}, (err, transactionHash) => {
-                console.log(err)
-                console.log(transactionHash)
-            });
-        })
     }
 
     render() {
-
         return (
             <div>
-                accounts : {this.state.accounts}
-                <br/>
-                balance : {this.state.balance}
-                <br/>
-                totalSupply : {this.state.totalSupply}
-                <br/>
-                tokenBalance : {this.state.tokenBalance}
-                <button onClick={this.onClickRunBtn}>run</button>
+                <NodeComponent accountInfo={accountInfo.account1}/>
+                <NodeComponent accountInfo={accountInfo.account2}/>
+                <NodeComponent accountInfo={accountInfo.account3}/>
+                <NodeComponent accountInfo={accountInfo.account4}/>
+                <NodeComponent accountInfo={accountInfo.account5}/>
+                <NodeComponent accountInfo={accountInfo.account6}/>
+                <NodeComponent accountInfo={accountInfo.account7}/>
             </div>
         );
     }

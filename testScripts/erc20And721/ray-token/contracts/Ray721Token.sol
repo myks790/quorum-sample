@@ -16,4 +16,8 @@ contract Ray721Token is ERC721Full {
         _setTokenURI(nextTokenId, tokenURI);
         return true;
     }
+
+    function tokensOfOwner() public view returns(uint256[] memory){
+        return _tokensOfOwner(msg.sender);
+    }
 }
