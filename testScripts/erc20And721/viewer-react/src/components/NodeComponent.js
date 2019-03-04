@@ -52,7 +52,7 @@ class NodeComponent extends Component {
 
     onClickMint = () => {
         const addrs = this.props.accountInfo.addr;
-        this.crowdsale.methods.mintOnce().send({from: addrs});
+        this.crowdsale.methods.buyTokens(addrs).send({from: addrs, value:10000, gas:300000});
         this.ray721Token.methods.createToken("http://test.com/test.json").send({from: addrs, gas: 300000});
     };
 

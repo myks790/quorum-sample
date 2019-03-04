@@ -9,8 +9,4 @@ contract MyCrowdsale is Crowdsale, MintedCrowdsale {
     MintedCrowdsale()
     Crowdsale(rate, wallet, token)
     public{}
-
-    function mintOnce() public {
-        ERC20Mintable(address(token())).mint(msg.sender, 10000);
-    }
 }
