@@ -57,8 +57,13 @@ class NodeComponent extends Component {
     };
 
     onClickBuy = () => {
+        let options = {from: this.props.accountInfo.addr, gas: 3000000};
         if (!!this.tokenIdForBuy)
-            this.market.methods.buy(this.tokenIdForBuy).send({from: this.props.accountInfo.addr, gas: 3000000});
+            this.market.methods.tokenPrice(this.tokenIdForBuy).call(options, (err, tokenPrice) =>{
+                this.rayToken.methods.approve(ContractsAddress.Market, tokenPrice).send(options, (err, transctionHash) => {
+                    this.market.methods.buy(this.tokenIdForBuy).send(options);
+                });
+            });
         else
             console.log('require tokenId')
     };
@@ -69,8 +74,8 @@ class NodeComponent extends Component {
         const options = {
             from: this.props.accountInfo.addr
         };
-        this.market.methods.sell(tokenId, price).send(options , (err, transctionHash) => {
-            if(err){
+        this.market.methods.sell(tokenId, price).send(options, (err, transctionHash) => {
+            if (err) {
                 console.log('sell : fail');
                 return false;
             }
