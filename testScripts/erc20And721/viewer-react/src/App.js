@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import NodeComponent from "./components/NodeComponent";
+import ERCCheckComponent from "./components/ERCCheckComponent";
 
 const accountInfo = {
     account1: {addr: '0xed9d02e382b34818e88B88a309c7fe71E65f419d', url: 'http://localhost:22000'},
@@ -12,22 +13,12 @@ const accountInfo = {
 };
 
 class App extends Component {
-    state = {
-        accounts: null
-    };
-
-    constructor(props) {
-        super(props);
-
-    }
-
-    componentDidMount() {
-
-    }
-
     render() {
         return (
             <div>
+                <ERCCheckComponent accountInfo={accountInfo.account1}/>
+                <br/>
+                <br/>
                 <NodeComponent accountInfo={accountInfo.account1}/>
                 <NodeComponent accountInfo={accountInfo.account2}/>
                 <NodeComponent accountInfo={accountInfo.account3}/>
