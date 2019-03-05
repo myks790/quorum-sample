@@ -193,7 +193,7 @@ services:
       - "22000:8545"
     volumes:
       - vol1:/qdata
-      - ./7nodes:/examples:ro
+      - ./3nodes:/examples:ro
       - ./../nodeKeys:/nodeKeys
       - ./../scripts:/scripts
       - ./../testScripts:/testScripts
@@ -214,7 +214,7 @@ services:
     volumes:
       - vol1_tm:/qdata/tm
       - vol1_tm_ipc:/qdata/tm_ipc
-      - ./7nodes/keys:/examples/keys
+      - ./3nodes/keys:/examples/keys
     networks:
       quorum-examples-net:
         ipv4_address: 172.16.239.101
@@ -227,7 +227,7 @@ services:
       - "22001:8545"
     volumes:
       - vol2:/qdata
-      - ./7nodes:/examples:ro
+      - ./3nodes:/examples:ro
       - ./../nodeKeys:/nodeKeys
       - ./../scripts:/scripts
       - ./../testScripts:/testScripts
@@ -248,7 +248,7 @@ services:
     volumes:
       - vol2_tm:/qdata/tm
       - vol2_tm_ipc:/qdata/tm_ipc
-      - ./7nodes/keys:/examples/keys
+      - ./3nodes/keys:/examples/keys
     networks:
       quorum-examples-net:
         ipv4_address: 172.16.239.102
@@ -261,7 +261,7 @@ services:
       - "22002:8545"
     volumes:
       - vol3:/qdata
-      - ./7nodes:/examples:ro
+      - ./3nodes:/examples:ro
       - ./../nodeKeys:/nodeKeys
       - ./../scripts:/scripts
       - ./../testScripts:/testScripts
@@ -282,7 +282,7 @@ services:
     volumes:
       - vol3_tm:/qdata/tm
       - vol3_tm_ipc:/qdata/tm_ipc
-      - ./7nodes/keys:/examples/keys
+      - ./3nodes/keys:/examples/keys
     networks:
       quorum-examples-net:
         ipv4_address: 172.16.239.103
