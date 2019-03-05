@@ -10,5 +10,5 @@ Contract.prototype.get = function(transctionAddress) {
 
 
 Contract.prototype.set = function(value) {
-    this.contract.set(value,{from:eth.accounts[0],privateFor:["ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc="]});
+    this.contract.set(value,{from:eth.accounts[0],privateFor:["1iTZde/ndBHvzhcl7V68x44Vx7pl8nwx9LqnM/AfJUg="]});
 }

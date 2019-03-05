@@ -163,18 +163,6 @@ x-tx-manager-def:
                },
                {
                    "url": "http://txmanager3:9000"
-               },
-               {
-                   "url": "http://txmanager4:9000"
-               },
-               {
-                   "url": "http://txmanager5:9000"
-               },
-               {
-                   "url": "http://txmanager6:9000"
-               },
-               {
-                   "url": "http://txmanager7:9000"
                }
             ],
             "keys": {
@@ -300,144 +288,6 @@ services:
         ipv4_address: 172.16.239.103
     environment:
       - NODE_ID=3
-  node4:
-    << : *quorum-def
-    hostname: node4
-    ports:
-      - "22003:8545"
-    volumes:
-      - vol4:/qdata
-      - ./7nodes:/examples:ro
-      - ./../nodeKeys:/nodeKeys
-      - ./../scripts:/scripts
-      - ./../testScripts:/testScripts
-      - vol4_tm_ipc:/qdata/tm
-    depends_on:
-      - txmanager4
-    environment:
-      - PRIVATE_CONFIG=/qdata/tm/tm.ipc
-      - NODE_ID=4
-    networks:
-      quorum-examples-net:
-        ipv4_address: 172.16.239.14
-  txmanager4:
-    << : *tx-manager-def
-    hostname: txmanager4
-    ports:
-      - "9084:9080"
-    volumes:
-      - vol4_tm:/qdata/tm
-      - vol4_tm_ipc:/qdata/tm_ipc
-      - ./7nodes/keys:/examples/keys
-    networks:
-      quorum-examples-net:
-        ipv4_address: 172.16.239.104
-    environment:
-      - NODE_ID=4
-  node5:
-    << : *quorum-def
-    hostname: node5
-    ports:
-      - "22004:8545"
-    volumes:
-      - vol5:/qdata
-      - ./7nodes:/examples:ro
-      - ./../nodeKeys:/nodeKeys
-      - ./../scripts:/scripts
-      - ./../testScripts:/testScripts
-      - vol5_tm_ipc:/qdata/tm
-    depends_on:
-      - txmanager5
-    environment:
-      - PRIVATE_CONFIG=/qdata/tm/tm.ipc
-      - NODE_ID=5
-    networks:
-      quorum-examples-net:
-        ipv4_address: 172.16.239.15
-  txmanager5:
-    << : *tx-manager-def
-    hostname: txmanager5
-    ports:
-      - "9085:9080"
-    volumes:
-      - vol5_tm:/qdata/tm
-      - vol5_tm_ipc:/qdata/tm_ipc
-      - ./7nodes/keys:/examples/keys
-    networks:
-      quorum-examples-net:
-        ipv4_address: 172.16.239.105
-    environment:
-      - NODE_ID=5
-  node6:
-    << : *quorum-def
-    hostname: node6
-    ports:
-      - "22005:8545"
-    volumes:
-      - vol6:/qdata
-      - ./7nodes:/examples:ro
-      - ./../nodeKeys:/nodeKeys
-      - ./../scripts:/scripts
-      - ./../testScripts:/testScripts
-      - vol6_tm_ipc:/qdata/tm
-    depends_on:
-      - txmanager6
-    environment:
-      - PRIVATE_CONFIG=/qdata/tm/tm.ipc
-      - NODE_ID=6
-    networks:
-      quorum-examples-net:
-        ipv4_address: 172.16.239.16
-  txmanager6:
-    << : *tx-manager-def
-    hostname: txmanager6
-    ports:
-      - "9086:9080"
-      - "8083:8082"
-    volumes:
-      - vol6_tm:/qdata/tm
-      - vol6_tm_ipc:/qdata/tm_ipc
-      - ./7nodes/keys:/examples/keys
-    networks:
-      quorum-examples-net:
-        ipv4_address: 172.16.239.106
-    environment:
-      - NODE_ID=6
-  node7:
-    << : *quorum-def
-    hostname: node7
-    ports:
-      - "22006:8545"
-    volumes:
-      - vol7:/qdata
-      - ./7nodes:/examples:ro
-      - ./../nodeKeys:/nodeKeys
-      - ./../scripts:/scripts
-      - ./../testScripts:/testScripts
-      - vol7_tm_ipc:/qdata/tm
-    depends_on:
-      - txmanager7
-    environment:
-      - PRIVATE_CONFIG=/qdata/tm/tm.ipc
-      - NODE_ID=7
-    networks:
-      quorum-examples-net:
-        ipv4_address: 172.16.239.17
-  txmanager7:
-    << : *tx-manager-def
-    hostname: txmanager7
-    ports:
-      - "9087:9080"
-      - "8082:8082"
-    volumes:
-      - vol7_tm:/qdata/tm
-      - vol7_tm_ipc:/qdata/tm_ipc
-      - ./7nodes/keys:/examples/keys
-    networks:
-      quorum-examples-net:
-        ipv4_address: 172.16.239.107
-    environment:
-      - NODE_ID=7
 networks:
   quorum-examples-net:
     driver: bridge
@@ -449,22 +299,9 @@ volumes:
   "vol1":
   "vol2":
   "vol3":
-  "vol4":
-  "vol5":
-  "vol6":
-  "vol7":
   "vol1_tm":
   "vol2_tm":
   "vol3_tm":
-  "vol4_tm":
-  "vol5_tm":
-  "vol6_tm":
-  "vol7_tm":
   "vol1_tm_ipc":
   "vol2_tm_ipc":
   "vol3_tm_ipc":
-  "vol4_tm_ipc":
-  "vol5_tm_ipc":
-  "vol6_tm_ipc":
-  "vol7_tm_ipc":
-
