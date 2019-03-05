@@ -194,7 +194,7 @@ services:
     volumes:
       - vol1:/qdata
       - ./3nodes:/examples:ro
-      - ./../nodeKeys:/nodeKeys
+      - ./nodeKeys:/nodeKeys
       - ./../scripts:/scripts
       - ./../testScripts:/testScripts
       - vol1_tm_ipc:/qdata/tm
@@ -228,7 +228,7 @@ services:
     volumes:
       - vol2:/qdata
       - ./3nodes:/examples:ro
-      - ./../nodeKeys:/nodeKeys
+      - ./nodeKeys:/nodeKeys
       - ./../scripts:/scripts
       - ./../testScripts:/testScripts
       - vol2_tm_ipc:/qdata/tm
@@ -262,7 +262,7 @@ services:
     volumes:
       - vol3:/qdata
       - ./3nodes:/examples:ro
-      - ./../nodeKeys:/nodeKeys
+      - ./nodeKeys:/nodeKeys
       - ./../scripts:/scripts
       - ./../testScripts:/testScripts
       - vol3_tm_ipc:/qdata/tm
@@ -279,6 +279,7 @@ services:
     hostname: txmanager3
     ports:
       - "9083:9080"
+      - "8082:8082"
     volumes:
       - vol3_tm:/qdata/tm
       - vol3_tm_ipc:/qdata/tm_ipc
