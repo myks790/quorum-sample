@@ -2,6 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import "admin-lte/dist/css/AdminLTE.min.css";
+import "admin-lte/dist/css/skins/_all-skins.css";
+import "font-awesome/css/font-awesome.min.css";
+import "ionicons/dist/css/ionicons.min.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

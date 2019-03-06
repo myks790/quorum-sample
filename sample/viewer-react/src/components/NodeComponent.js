@@ -52,14 +52,14 @@ class NodeComponent extends Component {
 
     onClickMint = () => {
         const addrs = this.props.accountInfo.addr;
-        this.crowdsale.methods.buyTokens(addrs).send({from: addrs, value:10000, gas:300000});
+        this.crowdsale.methods.buyTokens(addrs).send({from: addrs, value: 10000, gas: 300000});
         this.ray721Token.methods.createToken("http://test.com/test.json").send({from: addrs, gas: 300000});
     };
 
     onClickBuy = () => {
         let options = {from: this.props.accountInfo.addr, gas: 3000000};
         if (!!this.tokenIdForBuy)
-            this.market.methods.tokenPrice(this.tokenIdForBuy).call(options, (err, tokenPrice) =>{
+            this.market.methods.tokenPrice(this.tokenIdForBuy).call(options, (err, tokenPrice) => {
                 this.rayToken.methods.approve(ContractsAddress.Market, tokenPrice).send(options, (err, transctionHash) => {
                     this.market.methods.buy(this.tokenIdForBuy).send(options);
                 });
@@ -101,33 +101,39 @@ class NodeComponent extends Component {
         const datas = this.state.datas;
 
         return (
-            <div>
-                accounts : {this.props.accountInfo.addr}
-                <br/>
-                balance : {datas.balance}
-                <br/>
-                totalSupply : {datas.totalSupply}
-                <br/>
-                tokenBalance : {datas.tokenBalance}
-                <br/>
-                721 tokensOfOwner : {datas.tokensOfOwner721}
-                <br/>
-                721 totalSupply : {datas.totalSupply721}
-                <br/>
-                721 tokenURI : {datas.tokenURI}
-                <br/>
-                <button onClick={this.getInfo}>info</button>
-                <button onClick={this.onClickMint}>mint</button>
-                <p>
-                    tokenId : <input onChange={this.onChangeBuyTokenId}/>
-                    <button onClick={this.onClickBuy}>buy</button>
-                </p>
-                <p>
-                    tokenId : <input onChange={this.onChangeSellToeknId}/>
-                    price : <input onChange={this.onChangeSellPrice}/>
-                    <button onClick={this.onClickSell}>sell</button>
-                </p>
-
+            <div className="box">
+                <div className="box-header with-border">
+                    <h3 className="box-title">제목</h3>
+                </div>
+                <div className="box-body">
+                    accounts : {this.props.accountInfo.addr}
+                    <br/>
+                    balance : {datas.balance}
+                    <br/>
+                    totalSupply : {datas.totalSupply}
+                    <br/>
+                    tokenBalance : {datas.tokenBalance}
+                    <br/>
+                    721 tokensOfOwner : {datas.tokensOfOwner721}
+                    <br/>
+                    721 totalSupply : {datas.totalSupply721}
+                    <br/>
+                    721 tokenURI : {datas.tokenURI}
+                    <br/>
+                </div>
+                <div className="box-footer">
+                    <button onClick={this.getInfo}>info</button>
+                    <button onClick={this.onClickMint}>mint</button>
+                    <p>
+                        tokenId : <input onChange={this.onChangeBuyTokenId}/>
+                        <button onClick={this.onClickBuy}>buy</button>
+                    </p>
+                    <p>
+                        tokenId : <input onChange={this.onChangeSellToeknId}/>
+                        price : <input onChange={this.onChangeSellPrice}/>
+                        <button onClick={this.onClickSell}>sell</button>
+                    </p>
+                </div>
             </div>
         );
     }

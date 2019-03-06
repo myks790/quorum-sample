@@ -31,9 +31,11 @@ class NodeComponent extends Component {
             gas: 30000
         }).on('receipt', (receipt) => {
             this.ERC165.options.address = contractAddress;
-            this.ERC165.methods.supportsInterface('0xffffffff').call({from: this.props.accountInfo.addr,
-                to: contractAddress},(err, isSupported)=>{
-                if(isSupported === false){
+            this.ERC165.methods.supportsInterface('0xffffffff').call({
+                from: this.props.accountInfo.addr,
+                to: contractAddress
+            }, (err, isSupported) => {
+                if (isSupported === false) {
                     obj[saveName + 'ERC165'] = 'true';
                     this.setState(obj);
                     this.checkERC721(contractAddress, saveName + 'ERC721')
@@ -49,9 +51,11 @@ class NodeComponent extends Component {
     checkERC721 = (contractAddress, saveName) => {
         let obj = {};
         this.ERC165.options.address = contractAddress;
-        this.ERC165.methods.supportsInterface('0x80ac58cd').call({from: this.props.accountInfo.addr,
-            to: contractAddress},(err, isSupported)=>{
-            if(isSupported === true){
+        this.ERC165.methods.supportsInterface('0x80ac58cd').call({
+            from: this.props.accountInfo.addr,
+            to: contractAddress
+        }, (err, isSupported) => {
+            if (isSupported === true) {
                 obj[saveName] = 'true';
                 this.setState(obj);
             }
@@ -60,12 +64,17 @@ class NodeComponent extends Component {
 
     render() {
         return (
-            <div>
-                myCrowdsale is ERC165 ? : {this.state.myCrowdsaleIsERC165}
-                <br/>
-                ray721token is ERC165 ? : {this.state.ray721TokenIsERC165}
-                <br/>
-                ray721token is ERC721 ? : {this.state.ray721TokenIsERC721}
+            <div className="box">
+                <div className="box-header with-border">
+                    <h3 className="box-title">erc165 구현 검사</h3>
+                </div>
+                <div className="box-body">
+                    myCrowdsale is ERC165 ? : {this.state.myCrowdsaleIsERC165}
+                    <br/>
+                    ray721token is ERC165 ? : {this.state.ray721TokenIsERC165}
+                    <br/>
+                    ray721token is ERC721 ? : {this.state.ray721TokenIsERC721}
+                </div>
             </div>
         );
     }
