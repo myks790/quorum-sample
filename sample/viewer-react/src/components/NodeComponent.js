@@ -103,11 +103,9 @@ class NodeComponent extends Component {
         return (
             <div className="box">
                 <div className="box-header with-border">
-                    <h3 className="box-title">제목</h3>
+                    <h3 className="box-title">accounts : {this.props.accountInfo.addr}</h3>
                 </div>
                 <div className="box-body">
-                    accounts : {this.props.accountInfo.addr}
-                    <br/>
                     balance : {datas.balance}
                     <br/>
                     totalSupply : {datas.totalSupply}
@@ -124,15 +122,20 @@ class NodeComponent extends Component {
                 <div className="box-footer">
                     <button onClick={this.getInfo}>info</button>
                     <button onClick={this.onClickMint}>mint</button>
-                    <p>
-                        tokenId : <input onChange={this.onChangeBuyTokenId}/>
+                    <span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        buy :
+                        <input onChange={this.onChangeBuyTokenId} placeholder={'tokenId'}/>
                         <button onClick={this.onClickBuy}>buy</button>
-                    </p>
-                    <p>
-                        tokenId : <input onChange={this.onChangeSellToeknId}/>
-                        price : <input onChange={this.onChangeSellPrice}/>
+                    </span>
+                    <span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        sell :
+                        <input onChange={this.onChangeSellToeknId} placeholder={'tokenId'}/>
+                        <input onChange={this.onChangeSellPrice} placeholder={'price'}/>
                         <button onClick={this.onClickSell}>sell</button>
-                    </p>
+                    </span>
+
                 </div>
             </div>
         );

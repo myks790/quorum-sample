@@ -52,7 +52,7 @@ class App extends Component {
                     <div className="content-wrapper">
                         <section className="content-header">
                             <h1>
-                                Fixed Layout
+                                {menuData[this.state.selectedMenu].title}
                             </h1>
                         </section>
 

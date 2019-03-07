@@ -23,11 +23,18 @@ contract Market {
     }
 
     function buy(uint256 tokenId) public returns (bool){
+        uint32 tokenPrice = _tokenPrice[tokenId];
         require(_token20.balanceOf(msg.sender) > _tokenPrice[tokenId]);
-        address seller = _token721.ownerOf(tokenId);
-        _token20.transferFrom(msg.sender, seller, _tokenPrice[tokenId]);
-        _token721.safeTransferFrom(seller, msg.sender, tokenId);
-        _tokenPrice[tokenId] = 0;
-        return true;
+        if(_tokenPrice[tokenId] != 0){
+            _tokenPrice[tokenId] = 0;
+            address seller = _token721.ownerOf(tokenId);
+            if(!_token20.transferFrom(msg.sender, seller, tokenPrice)){
+                _tokenPrice[tokenId] = tokenPrice;
+                return false;
+            }
+            _token721.safeTransferFrom(seller, msg.sender, tokenId);
+            return true;
+        }
+        return false;
     }
 }
