@@ -42,7 +42,7 @@ class App extends Component {
                 <>
                     <header className="main-header">
                         <a className="logo">
-                            <span className="logo-lg"><b>S</b>ample</span>
+                            <span className="logo-lg"><b>Q</b>uorum</span>
                         </a>
                     </header>
 
