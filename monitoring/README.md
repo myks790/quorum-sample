@@ -1,0 +1,3 @@
+grafana id, pw : admin
+
+docker monitoring dashboard url :  https://grafana.com/dashboards/193...

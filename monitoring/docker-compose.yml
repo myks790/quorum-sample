@@ -1,0 +1,44 @@
+version: '3.2'
+services:
+  prometheus:
+    image: prom/prometheus:v2.7.2
+    container_name: prometheus
+    ports:
+    - 9091:9090
+    command:
+    - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+    - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+    - cadvisor
+    networks:
+      monitor-net:
+        ipv4_address: 172.16.240.11
+  cadvisor:
+    image: google/cadvisor:v0.33.0
+    container_name: cadvisor
+    ports:
+    - 9092:8080
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      monitor-net:
+        ipv4_address: 172.16.240.12
+  grafana:
+    image: grafana/grafana:6.0.1
+    container_name: grafana
+    ports:
+    - 9090:3000
+    volumes:
+    - ./grafana-provisioning:/etc/grafana/provisioning
+
+networks:
+  monitor-net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.16.240.0/24
