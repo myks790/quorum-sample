@@ -19,5 +19,6 @@ datasources:
   isDefault: true
   jsonData:
     httpMethod: GET
+    timeInterval: 5s
   version: 1
   editable: true
