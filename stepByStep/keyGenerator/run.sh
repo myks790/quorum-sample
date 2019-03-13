@@ -5,7 +5,7 @@ COUNT=3 #default : 3
 args=("$@")
 PARA=${args[0]}
 echo ${PARA}
-if [[ ${PARA:0:5} -eq "COUNT" ]]; then
+if [[ ${PARA:0:5} = "COUNT" ]]; then
     COUNT=${PARA:6}
 fi
 
@@ -14,7 +14,7 @@ COMMAND="geth --datadir /keys account new --password /keys/pw"
 SUB=${COMMAND}
 COMMAND2="bootnode --genkey=nodeKey1"
 SUB2="bootnode --genkey=nodeKey"
-if [[ ${COUNT} -ne "1" ]]; then
+if [[ ${COUNT} != "1" ]]; then
     for i in `seq 2 ${COUNT}`
     do
        COMMAND="${COMMAND} && ${SUB}"

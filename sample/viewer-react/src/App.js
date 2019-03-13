@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, Link, Route, Switch} from 'react-router-dom';
 import NodeComponent from "./components/NodeComponent";
 import ERCCheckComponent from "./components/ERCCheckComponent";
 import SliderbarComponent from "./components/SliderbarComponent";
+import StressTestComponent from "./components/StressTestComponent";
+
 
 const accountInfo = {
     account1: {addr: '0xed9d02e382b34818e88B88a309c7fe71E65f419d', url: 'http://localhost:22000'},
@@ -25,6 +27,11 @@ const menuData = [
         path: '/erc165test',
         contents: () => <ERCCheckComponent accountInfo={accountInfo.account1}/>
     },
+    {
+        title: "StressTest",
+        path: '/stressTest',
+        contents: () => <StressTestComponent accountsInfo={accountInfo}/>
+    },
 ];
 
 class App extends Component {
@@ -38,12 +45,12 @@ class App extends Component {
 
     render() {
         return (
-            <Router>
+            <BrowserRouter>
                 <>
                     <header className="main-header">
-                        <a className="logo">
+                        <Link className="logo" to={'/'}>
                             <span className="logo-lg"><b>Q</b>uorum</span>
-                        </a>
+                        </Link>
                     </header>
 
                     <SliderbarComponent selectedMenu={this.state.selectedMenu} menu={menuData}
@@ -60,16 +67,16 @@ class App extends Component {
                             <Switch>
                                 <Route exact path={menuData[0].path} component={menuData[0].contents}/>
                                 <Route path={menuData[1].path} component={menuData[1].contents}/>
+                                <Route path={menuData[2].path} component={menuData[2].contents}/>
                             </Switch>
                         </section>
                     </div>
                 </>
-            </Router>
+            </BrowserRouter>
         );
     }
 }
 
-//<Menu selectedMenu={this.state.selectedMenu}/>
 
 
 export default App;
