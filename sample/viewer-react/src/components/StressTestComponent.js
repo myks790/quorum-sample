@@ -21,6 +21,7 @@ class StressTestComponent extends Component {
         this.ERC165 = this.web3.eth.Contract(IERC165.abi);
 
         this.timerId = -1;
+        this.refreshTimerId = -1;
         this.sendCount = 0;
         this.interval = 1000;
     }
@@ -47,9 +48,11 @@ class StressTestComponent extends Component {
                     gas: 300000
                 });
                 this.sendCount += 2;
-                if((new Date() - this.startTime) % 2000 < 100)
-                    this.getInfo();
             }, this.interval);
+            this.refreshTimerId = setInterval(() => {
+                this.getInfo();
+                this.endTime = new Date();
+            },1000);
         }
     };
 
@@ -65,6 +68,7 @@ class StressTestComponent extends Component {
         } else {
             this.endTime = new Date();
             clearInterval(this.timerId);
+            clearInterval(this.refreshTimerId);
             this.timerId = -1;
             let failCnt = 0;
             let createdCount = 0;
