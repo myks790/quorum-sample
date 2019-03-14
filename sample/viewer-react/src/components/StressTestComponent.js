@@ -34,7 +34,7 @@ class StressTestComponent extends Component {
         if (this.timerId !== -1) {
             alert('이미 실행 중...')
         } else {
-            this.startTime = new Date();
+            this.startTime = Date.now();
             this.endTime = this.startTime;
             this.sendCount = 0;
             this.totalSupply721AtStart = this.state.totalSupply721;
@@ -51,8 +51,8 @@ class StressTestComponent extends Component {
             }, this.interval);
             this.refreshTimerId = setInterval(() => {
                 this.getInfo();
-                this.endTime = new Date();
-            },1000);
+                this.endTime = Date.now();
+            },3000);
         }
     };
 
@@ -66,7 +66,7 @@ class StressTestComponent extends Component {
         if (this.timerId === -1) {
             alert('이미 정지됨')
         } else {
-            this.endTime = new Date();
+            this.endTime = Date.now();
             clearInterval(this.timerId);
             clearInterval(this.refreshTimerId);
             this.timerId = -1;
