@@ -19,7 +19,7 @@ x-quorum-def:
     retries: 10
     start_period: 5s
   labels:
-    com.quorum.consensus: istanbul
+    com.quorum.consensus: ${QUORUM_CONSENSUS:-istanbul}
   entrypoint:
     - /bin/sh
     - -c
@@ -45,7 +45,11 @@ x-quorum-def:
       cp $${DDIR}/static-nodes.json $${DDIR}/permissioned-nodes.json
       cat $${DDIR}/static-nodes.json
       GENESIS_FILE="/examples/istanbul-genesis.json"
+      if [ "${QUORUM_CONSENSUS:-istanbul}" == "raft" ]; then
+        GENESIS_FILE="/examples/raft-genesis.json"
+      fi
       NETWORK_ID=$$(cat $${GENESIS_FILE} | grep chainId | awk -F " " '{print $$2}' | awk -F "," '{print $$1}')
+      GETH_ARGS_raft="--raft --raftport 50400"
       GETH_ARGS_istanbul="--emitcheckpoints --istanbul.blockperiod 1 --mine --minerthreads 1 --syncmode full"
 
       if [ ! -d $${DDIR}/geth/chaindata ]; then
@@ -53,7 +57,7 @@ x-quorum-def:
       fi
 
       geth \
-        --identity node$${NODE_ID}-istanbul \
+        --identity node$${NODE_ID}-${QUORUM_CONSENSUS:-istanbul} \
         --datadir $${DDIR} \
         --permissioned \
         --nodiscover \
@@ -63,11 +67,11 @@ x-quorum-def:
         --rpcaddr 0.0.0.0 \
         --rpcport 8545 \
         --rpccorsdomain "*" \
-        --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,istanbul \
+        --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,${QUORUM_CONSENSUS:-istanbul} \
         --port 21000 \
         --unlock 0 \
         --password /examples/passwords.txt \
-        $${GETH_ARGS_istanbul}
+        $${GETH_ARGS_${QUORUM_CONSENSUS:-istanbul}}
 x-tx-manager-def:
   &tx-manager-def
   image: "${QUORUM_TX_MANAGER_DOCKER_IMAGE:-quorumengineering/tessera:0.8}"
