@@ -3,11 +3,11 @@ echo "3번 tm이 중지된 상태일때"
 echo "1 -> 3로 private contract 생성 될 경우"
 echo " "
 
-echo "istanbul_txmanager3_1 정지"
-docker stop istanbul_txmanager3_1 > /dev/null
+echo "quorum_txmanager3_1 정지"
+docker stop quorum_txmanager3_1 > /dev/null
 
 echo "private contract 생성"
-result=`docker exec -it istanbul_node1_1 geth attach /qdata/dd/geth.ipc --exec "loadScript('/testScripts/tmTrouble/privateContractTo3.js')"`
+result=`docker exec -it quorum_node1_1 geth attach /qdata/dd/geth.ipc --exec "loadScript('/testScripts/tmTrouble/privateContractTo3.js')"`
 transactionAddress=${result:0:66}
 
 if [ ${transactionAddress:0:2} == "0x" ]; then
@@ -18,12 +18,12 @@ else
     echo " "
     echo "---------------------------------------------------------"
     echo "public contract 생성"
-    result=`docker exec -it istanbul_node1_1 geth attach /qdata/dd/geth.ipc --exec "loadScript('/testScripts/tmTrouble/publicContract.js')"`
+    result=`docker exec -it quorum_node1_1 geth attach /qdata/dd/geth.ipc --exec "loadScript('/testScripts/tmTrouble/publicContract.js')"`
     transactionAddress=${result:0:66}
 fi
 
 getNodeData() {
-    docker exec -it istanbul_node$1_1 geth attach /qdata/dd/geth.ipc \
+    docker exec -it quorum_node$1_1 geth attach /qdata/dd/geth.ipc \
         --exec "loadScript('/testScripts/tmTrouble/checkPrivate.js');
                 var contract = new Contract('$2');
                 contract.get();"

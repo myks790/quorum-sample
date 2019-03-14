@@ -4,7 +4,7 @@ echo "3번 노드의 tm 데이터가 삭제 됬을 때 => 복구됨"
 echo " "
 
 echo "private contract 생성"
-transactionAddress=`docker exec -it istanbul_node1_1 geth attach /qdata/dd/geth.ipc --exec "loadScript('/testScripts/tmTrouble/privateContractTo3.js')"`
+transactionAddress=`docker exec -it quorum_node1_1 geth attach /qdata/dd/geth.ipc --exec "loadScript('/testScripts/tmTrouble/privateContractTo3.js')"`
 transactionAddress=${transactionAddress:0:66}
 echo "transactionAddress : $transactionAddress"
 
@@ -12,7 +12,7 @@ echo "sleep 5"
 sleep 5
 
 getNodeData() {
-    docker exec -it istanbul_node$1_1 geth attach /qdata/dd/geth.ipc \
+    docker exec -it quorum_node$1_1 geth attach /qdata/dd/geth.ipc \
         --exec "loadScript('/testScripts/tmTrouble/checkPrivate.js');
                 var contract = new Contract('$2');
                 contract.get();"
@@ -27,17 +27,17 @@ getNodeData 3 $transactionAddress
 
 
 echo "3번 tm data 삭제"
-#docker stop istanbul_node3_1
-docker exec -it istanbul_txmanager3_1 /bin/sh \
+#docker stop quorum_node3_1
+docker exec -it quorum_txmanager3_1 /bin/sh \
     -c "cd qdata/tm
         rm ./*.db"
 echo "sleep 3"
 sleep 3
 echo "3번 tm과 노드 restart"
-docker restart istanbul_txmanager3_1 > /dev/null
+docker restart quorum_txmanager3_1 > /dev/null
 echo "sleep 50"
 sleep 50
-docker restart istanbul_node3_1 > /dev/null
+docker restart quorum_node3_1 > /dev/null
 echo "sleep 60"
 sleep 60
 
