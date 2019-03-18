@@ -1,6 +1,6 @@
 ## 필요 모듈 설치
 npm install -g truffle@v4.1.15 <br/>
-truffle v5에서 문제 있음(v5.0.4, v5.0.8만 확인)
+truffle v5에서 quorum 합의 알고리즘을 raft로 하고 배포 할때 문제 있음(v5.0.4, v5.0.8만 확인)
 https://github.com/trufflesuite/truffle/issues/1543
 
 
