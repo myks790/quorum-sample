@@ -26,9 +26,9 @@ library KeyHolderLibrary {
 
     struct KeyHolderData {
         uint256 executionNonce;
-        mapping (bytes32 => Key) keys;
-        mapping (uint256 => bytes32[]) keysByPurpose;
-        mapping (uint256 => Execution) executions;
+        mapping(bytes32 => Key) keys;
+        mapping(uint256 => bytes32[]) keysByPurpose;
+        mapping(uint256 => Execution) executions;
     }
 
     struct Execution {
@@ -40,7 +40,7 @@ library KeyHolderLibrary {
     }
 
     function init(KeyHolderData storage _keyHolderData)
-        public
+    public
     {
         bytes32 _key = keccak256(abi.encodePacked(msg.sender));
         _keyHolderData.keys[_key].key = _key;
@@ -51,40 +51,42 @@ library KeyHolderLibrary {
     }
 
     function getKey(KeyHolderData storage _keyHolderData, bytes32 _key)
-        public
-        view
-        returns(uint256[] storage purposes, uint256 keyType, bytes32 key)
+    public
+    view
+    returns (uint256[] storage purposes, uint256 keyType, bytes32 key)
     {
         return (
-            _keyHolderData.keys[_key].purposes,
-            _keyHolderData.keys[_key].keyType,
-            _keyHolderData.keys[_key].key
+        _keyHolderData.keys[_key].purposes,
+        _keyHolderData.keys[_key].keyType,
+        _keyHolderData.keys[_key].key
         );
     }
 
     function getKeyPurposes(KeyHolderData storage _keyHolderData, bytes32 _key)
-        public
-        view
-        returns(uint256[] storage purposes)
+    public
+    view
+    returns (uint256[] storage purposes)
     {
         return (_keyHolderData.keys[_key].purposes);
     }
 
     function getKeysByPurpose(KeyHolderData storage _keyHolderData, uint256 _purpose)
-        public
-        view
-        returns(bytes32[] storage _keys)
+    public
+    view
+    returns (bytes32[] storage _keys)
     {
         return _keyHolderData.keysByPurpose[_purpose];
     }
 
     function addKey(KeyHolderData storage _keyHolderData, bytes32 _key, uint256 _purpose, uint256 _type)
-        public
-        returns (bool success)
+    public
+    returns (bool success)
     {
-        require(_keyHolderData.keys[_key].key != _key, "Key already exists"); // Key should not already exist
+        require(_keyHolderData.keys[_key].key != _key, "Key already exists");
+        // Key should not already exist
         if (msg.sender != address(this)) {
-            require(keyHasPurpose(_keyHolderData, keccak256(abi.encodePacked(msg.sender)), 1), "Sender does not have management key"); // Sender has MANAGEMENT_KEY
+            require(keyHasPurpose(_keyHolderData, keccak256(abi.encodePacked(msg.sender)), 1), "Sender does not have management key");
+            // Sender has MANAGEMENT_KEY
         }
 
         _keyHolderData.keys[_key].key = _key;
@@ -99,8 +101,8 @@ library KeyHolderLibrary {
     }
 
     function approve(KeyHolderData storage _keyHolderData, uint256 _id, bool _approve)
-        public
-        returns (bool success)
+    public
+    returns (bool success)
     {
         require(keyHasPurpose(_keyHolderData, keccak256(abi.encodePacked(msg.sender)), 2), "Sender does not have action key");
         require(!_keyHolderData.executions[_id].executed, "Already executed");
@@ -109,7 +111,8 @@ library KeyHolderLibrary {
 
         if (_approve == true) {
             _keyHolderData.executions[_id].approved = true;
-            (bool success, bytes memory data) = _keyHolderData.executions[_id].to.call(_keyHolderData.executions[_id].data); //,0
+            //            (bool success,) = _keyHolderData.executions[_id].to.call(_keyHolderData.executions[_id].data, 0);
+            (bool success,) = _keyHolderData.executions[_id].to.call.value(_keyHolderData.executions[_id].value)(_keyHolderData.executions[_id].data);
             if (success) {
                 _keyHolderData.executions[_id].executed = true;
                 emit Executed(
@@ -135,8 +138,8 @@ library KeyHolderLibrary {
     }
 
     function execute(KeyHolderData storage _keyHolderData, address _to, uint256 _value, bytes memory _data)
-        public
-        returns (uint256 executionId)
+    public
+    returns (uint256 executionId)
     {
         require(!_keyHolderData.executions[_keyHolderData.executionNonce].executed, "Already executed");
         _keyHolderData.executions[_keyHolderData.executionNonce].to = _to;
@@ -145,20 +148,21 @@ library KeyHolderLibrary {
 
         emit ExecutionRequested(_keyHolderData.executionNonce, _to, _value, _data);
 
-        if (keyHasPurpose(_keyHolderData, keccak256(abi.encodePacked(msg.sender)),1) || keyHasPurpose(_keyHolderData, keccak256(abi.encodePacked(msg.sender)),2)) {
+        if (keyHasPurpose(_keyHolderData, keccak256(abi.encodePacked(msg.sender)), 1) || keyHasPurpose(_keyHolderData, keccak256(abi.encodePacked(msg.sender)), 2)) {
             approve(_keyHolderData, _keyHolderData.executionNonce, true);
         }
 
         _keyHolderData.executionNonce++;
-        return _keyHolderData.executionNonce-1;
+        return _keyHolderData.executionNonce - 1;
     }
 
     function removeKey(KeyHolderData storage _keyHolderData, bytes32 _key, uint256 _purpose)
-        public
-        returns (bool success)
+    public
+    returns (bool success)
     {
         if (msg.sender != address(this)) {
-            require(keyHasPurpose(_keyHolderData, keccak256(abi.encodePacked(msg.sender)), 1), "Sender does not have management key"); // Sender has MANAGEMENT_KEY
+            require(keyHasPurpose(_keyHolderData, keccak256(abi.encodePacked(msg.sender)), 1), "Sender does not have management key");
+            // Sender has MANAGEMENT_KEY
         }
 
         require(_keyHolderData.keys[_key].key == _key, "No such key");
@@ -195,9 +199,9 @@ library KeyHolderLibrary {
     }
 
     function keyHasPurpose(KeyHolderData storage _keyHolderData, bytes32 _key, uint256 _purpose)
-        public
-        view
-        returns(bool result)
+    public
+    view
+    returns (bool result)
     {
         bool isThere;
         if (_keyHolderData.keys[_key].key == 0) {

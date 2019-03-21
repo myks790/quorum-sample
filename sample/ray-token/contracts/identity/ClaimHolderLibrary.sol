@@ -26,8 +26,8 @@ library ClaimHolderLibrary {
     }
 
     struct Claims {
-        mapping (bytes32 => Claim) byId;
-        mapping (uint256 => bytes32[]) byTopic;
+        mapping(bytes32 => Claim) byId;
+        mapping(uint256 => bytes32[]) byTopic;
     }
 
     function addClaim(
@@ -40,8 +40,8 @@ library ClaimHolderLibrary {
         bytes memory _data,
         string memory _uri
     )
-        public
-        returns (bytes32 claimRequestId)
+    public
+    returns (bytes32 claimRequestId)
     {
         if (msg.sender != address(this)) {
             require(KeyHolderLibrary.keyHasPurpose(_keyHolderData, keccak256(abi.encodePacked(msg.sender)), 3), "Sender does not have claim signer key");
@@ -82,7 +82,7 @@ library ClaimHolderLibrary {
         bytes memory _data,
         uint256[] memory _offsets
     )
-        public
+    public
     {
         uint offset = 0;
         for (uint16 i = 0; i < _topic.length; i++) {
@@ -105,8 +105,8 @@ library ClaimHolderLibrary {
         Claims storage _claims,
         bytes32 _claimId
     )
-        public
-        returns (bool success)
+    public
+    returns (bool success)
     {
         if (msg.sender != address(this)) {
             require(KeyHolderLibrary.keyHasPurpose(_keyHolderData, keccak256(abi.encodePacked(msg.sender)), 1), "Sender does not have management key");
@@ -127,31 +127,31 @@ library ClaimHolderLibrary {
     }
 
     function getClaim(Claims storage _claims, bytes32 _claimId)
-        public
-        view
-        returns(
-          uint256 topic,
-          uint256 scheme,
-          address issuer,
-          bytes memory signature,
-          bytes memory data,
-          string memory uri
-        )
+    public
+    view
+    returns (
+        uint256 topic,
+        uint256 scheme,
+        address issuer,
+        bytes memory signature,
+        bytes memory data,
+        string memory uri
+    )
     {
         return (
-            _claims.byId[_claimId].topic,
-            _claims.byId[_claimId].scheme,
-            _claims.byId[_claimId].issuer,
-            _claims.byId[_claimId].signature,
-            _claims.byId[_claimId].data,
-            _claims.byId[_claimId].uri
+        _claims.byId[_claimId].topic,
+        _claims.byId[_claimId].scheme,
+        _claims.byId[_claimId].issuer,
+        _claims.byId[_claimId].signature,
+        _claims.byId[_claimId].data,
+        _claims.byId[_claimId].uri
         );
     }
 
     function getBytes(bytes memory _str, uint256 _offset, uint256 _length)
-        internal
-        pure
-        returns (bytes memory)
+    internal
+    pure
+    returns (bytes memory)
     {
         bytes memory sig = new bytes(_length);
         uint256 j = 0;

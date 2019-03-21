@@ -4,6 +4,7 @@ import NodeComponent from "./components/NodeComponent";
 import ERCCheckComponent from "./components/ERCCheckComponent";
 import SliderbarComponent from "./components/SliderbarComponent";
 import StressTestComponent from "./components/StressTestComponent";
+import ERC725Component from "./components/ERC725Component";
 
 
 const accountInfo = {
@@ -31,6 +32,11 @@ const menuData = [
         title: "StressTest",
         path: '/stressTest',
         contents: () => <StressTestComponent accountsInfo={accountInfo}/>
+    },
+    {
+        title: "ERC725",
+        path: '/erc725',
+        contents: () => <ERC725Component accountsInfo={accountInfo}/>
     },
 ];
 
@@ -68,6 +74,7 @@ class App extends Component {
                                 <Route exact path={menuData[0].path} component={menuData[0].contents}/>
                                 <Route path={menuData[1].path} component={menuData[1].contents}/>
                                 <Route path={menuData[2].path} component={menuData[2].contents}/>
+                                <Route path={menuData[3].path} component={menuData[3].contents}/>
                             </Switch>
                         </section>
                     </div>
