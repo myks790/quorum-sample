@@ -4,7 +4,7 @@ import Web3 from "web3";
 const ContractsAddress = require('./../contracts/ContractsAddress.json');
 const IERC165 = require('./../contracts/IERC165.json');
 
-class NodeComponent extends Component {
+class ERCCheckComponent extends Component {
     state = {
         myCrowdsaleIsERC165: null,
         ray721TokenIsERC165: null,
@@ -14,7 +14,7 @@ class NodeComponent extends Component {
     constructor(props) {
         super(props);
         this.web3 = new Web3(new Web3.providers.HttpProvider(props.accountInfo.url));
-        this.ERC165 = this.web3.eth.Contract(IERC165.abi);
+        this.ERC165 = new this.web3.eth.Contract(IERC165.abi);
     }
 
     componentDidMount() {
@@ -80,4 +80,4 @@ class NodeComponent extends Component {
     }
 }
 
-export default NodeComponent;
+export default ERCCheckComponent;

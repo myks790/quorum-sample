@@ -18,7 +18,7 @@ class StressTestComponent extends Component {
         this.ray721Token_2 = new this.web3_2.eth.Contract(Ray721Token.abi, ContractsAddress.Ray721Token);
         this.ray721Token_3 = new this.web3_3.eth.Contract(Ray721Token.abi, ContractsAddress.Ray721Token);
 
-        this.ERC165 = this.web3.eth.Contract(IERC165.abi);
+        this.ERC165 = new this.web3.eth.Contract(IERC165.abi);
 
         this.timerId = -1;
         this.refreshTimerId = -1;
