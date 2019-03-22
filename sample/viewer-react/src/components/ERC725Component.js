@@ -18,7 +18,9 @@ const CLAIM_SCHEMES = {
 class ERC725Component extends Component {
     state = {
         myHolderAddr: null,
-        holderBalance: 0
+        holderBalance: 0,
+        signature: '0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+        hexedData: '0x00'
     };
 
     constructor(props) {
@@ -51,14 +53,7 @@ class ERC725Component extends Component {
     };
 
     addIssuer = async () => {
-        const hexedData = this.web3.utils.asciiToHex("legit");
-        const hashedDataToSign = this.web3.utils.soliditySha3(
-            this.personalHolder.options.address,
-            CLAIM_TOPIC.RAY_TOKEN,
-            hexedData,
-        );
-        const signature = await this.web3.eth.sign(hashedDataToSign, this.props.accountsInfo.account1.addr);
-
+        if (!this.checkHolder()) return;
         console.log("Adding RAY_TOKEN claim on personal ClaimHolder...");
         const claimIssuer = this.claimHolder.options.address;
         const addClaimABI = await this.personalHolder.methods
@@ -66,8 +61,8 @@ class ERC725Component extends Component {
                 CLAIM_TOPIC.RAY_TOKEN,
                 CLAIM_SCHEMES.ECDSA,
                 claimIssuer,
-                signature,
-                hexedData,
+                this.state.signature,
+                this.state.hexedData,
                 "https://www.test.com/test/",
             ).encodeABI();
 
@@ -83,6 +78,7 @@ class ERC725Component extends Component {
     };
 
     buyToken = async () => {
+        if (!this.checkHolder()) return;
         const buyTokens = this.crowdsale.methods.buyTokens(
             this.personalHolder.options.address
         ).encodeABI();
@@ -102,13 +98,41 @@ class ERC725Component extends Component {
         console.log("result : personalHolder balance:", balance);
         this.setState({holderBalance: balance})
     };
+    checkHolder = () => {
+        if (!!!this.personalHolder) {
+            alert('holder가 없습니다.');
+            return false;
+        }
+        return true;
+    };
+
+    sign = async () => {
+        if (!this.checkHolder()) return;
+        const hexedData = this.web3.utils.asciiToHex("legit");
+        this.setState({hexedData: hexedData});
+        const hashedDataToSign = this.web3.utils.soliditySha3(
+            this.personalHolder.options.address,
+            CLAIM_TOPIC.RAY_TOKEN,
+            hexedData,
+        );
+        const signature = await this.web3.eth.sign(hashedDataToSign, this.props.accountsInfo.account1.addr);
+        this.setState({signature: signature});
+    };
 
     render() {
         return (
             <>
                 <div className="box">
                     <div className="box-header with-border">
-                        <h3 className="box-title">이용자</h3>
+                        <h3 className="box-title">순서</h3>
+                    </div>
+                    <div className="box-body">
+                        holder생성 -> Sign -> Adding claim Issuer -> buyToken
+                    </div>
+                </div>
+                <div className="box">
+                    <div className="box-header with-border">
+                        <h3 className="box-title">이용자(account3)</h3>
                     </div>
                     <div className="box-body">
                         {!!this.state.myHolderAddr ?
@@ -120,6 +144,18 @@ class ERC725Component extends Component {
                         <button onClick={this.buyToken}>buyToken</button>
                         <br/>
                         holderBalance : {this.state.holderBalance}
+                    </div>
+                </div>
+                <div className="box">
+                    <div className="box-header with-border">
+                        <h3 className="box-title">Issuer(account1)</h3>
+                    </div>
+                    <div className="box-body">
+                        <button onClick={this.sign}>Sign</button>
+                        <br/>
+                        signature : {this.state.signature}
+                        <br/>
+                        hexedData : {this.state.hexedData}
                     </div>
                 </div>
             </>
