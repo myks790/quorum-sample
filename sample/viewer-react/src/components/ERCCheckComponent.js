@@ -35,7 +35,10 @@ class ERCCheckComponent extends Component {
                 from: this.props.accountInfo.addr,
                 to: contractAddress
             }, (err, isSupported) => {
-                if (isSupported === false) {
+                if(err || isSupported === true){
+                    obj[saveName + 'ERC165'] = 'false';
+                    this.setState(obj);
+                }else if (isSupported === false) {
                     obj[saveName + 'ERC165'] = 'true';
                     this.setState(obj);
                     this.checkERC721(contractAddress, saveName + 'ERC721')
