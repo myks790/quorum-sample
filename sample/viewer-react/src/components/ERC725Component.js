@@ -15,6 +15,15 @@ const CLAIM_SCHEMES = {
     "RSA": 2
 };
 
+const KEY_PURPOSES = {
+    "MANAGEMENT": 1,
+    "CLAIM": 3,
+};
+
+const KEY_TYPES = {
+    "ECDSA": 1
+};
+
 class ERC725Component extends Component {
     state = {
         myHolderAddr: null,
@@ -115,8 +124,48 @@ class ERC725Component extends Component {
             CLAIM_TOPIC.RAY_TOKEN,
             hexedData,
         );
-        const signature = await this.web3.eth.sign(hashedDataToSign, this.props.accountsInfo.account1.addr);
+        await this.web3.eth.personal.unlockAccount(this.props.accountsInfo.account1_2.addr, '', 10);
+        const signature = await this.web3.eth.sign(hashedDataToSign, this.props.accountsInfo.account1_2.addr);
         this.setState({signature: signature});
+    };
+
+    addClaimKey = async () => {
+        const claimKey = this.web3.utils.keccak256(this.props.accountsInfo.account1_2.addr);
+        if(await this.existClaimKey(claimKey)){
+            console.log('The key already exists...');
+            console.log('key : ' + claimKey);
+        } else {
+            await this.claimHolder.methods.addKey(
+                claimKey,
+                KEY_PURPOSES.CLAIM,
+                KEY_TYPES.ECDSA,
+            ).send({
+                from: this.props.accountsInfo.account1.addr,
+                gas: 4612388,
+            });
+            console.log('success : addClaimKey')
+        }
+    };
+
+    existClaimKey = async (claimKey) => {
+        const keyData = await this.claimHolder.methods.getKey(claimKey).call();
+        return keyData.key === claimKey;
+    };
+
+    removeClaimKey = async () => {
+        const claimKey = this.web3.utils.keccak256(this.props.accountsInfo.account1_2.addr);
+        if(!await this.existClaimKey(claimKey)){
+            console.log('Not exists key');
+        }else{
+            await this.claimHolder.methods.removeKey(
+                claimKey,
+                KEY_PURPOSES.CLAIM
+            ).send({
+                from: this.props.accountsInfo.account1.addr,
+                gas: 4612388,
+            });
+            console.log('success : removeClaimKey')
+        }
     };
 
     render() {
@@ -127,7 +176,7 @@ class ERC725Component extends Component {
                         <h3 className="box-title">순서</h3>
                     </div>
                     <div className="box-body">
-                        holder생성 -> Sign -> Adding claim Issuer -> buyToken
+                        holder생성 -> addClaimKey -> Sign -> Adding claim Issuer -> buyToken
                     </div>
                 </div>
                 <div className="box">
@@ -149,6 +198,15 @@ class ERC725Component extends Component {
                 <div className="box">
                     <div className="box-header with-border">
                         <h3 className="box-title">Issuer(account1)</h3>
+                    </div>
+                    <div className="box-body">
+                        <button onClick={this.addClaimKey}>addClaimKey</button> : account1_2 를 추가<br/>
+                        <button onClick={this.removeClaimKey}>removeClaimKey</button>
+                    </div>
+                </div>
+                <div className="box">
+                    <div className="box-header with-border">
+                        <h3 className="box-title">account1_2</h3>
                     </div>
                     <div className="box-body">
                         <button onClick={this.sign}>Sign</button>

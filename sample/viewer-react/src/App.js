@@ -9,6 +9,7 @@ import ERC725Component from "./components/ERC725Component";
 
 const accountInfo = {
     account1: {addr: '0xed9d02e382b34818e88B88a309c7fe71E65f419d', url: 'http://localhost:22000'},
+    account1_2: {addr: '0x90b9aa7ed7c850e92cd4ee8a10a1f3925deb069f', url: 'http://localhost:22000'},
     account2: {addr: '0xca843569e3427144cead5e4d5999a3d0ccf92b8e', url: 'http://localhost:22001'},
     account3: {addr: '0x0fbdc686b912d7722dc86510934589e0aaf3b55a', url: 'http://localhost:22002'}
 };
