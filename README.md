@@ -2,11 +2,14 @@
 ## Quick start
 프로젝트 루트에서<br/>
 `./run.sh first-start` 명령어 실행<br/>
-위 명령어는 아래 명령어를 순차 실행<br/>
-* `./run.sh up` :  quorum과 monitoring 폴더의 docker-compose 실행 
+위 명령어는 아래 명령어 4개를 순차 실행<br/>
+* `./run.sh up` :  quorum(consensus : istanbul)과 monitoring 폴더의 docker-compose 실행 
 * `./run.sh npm-install` : sample 하위 폴더(viewer, ray-token)에 npm install을 실행
 * `./run.sh migrate` : truffle을 이용해 배포
-* `./run.sh viewer` : create-react-app을 이용해 만든 viewer 실행
+* `./run.sh viewer` : create-react-app을 이용해 만든 viewer 실행<br/><br/>
+
+`./run.sh down` : 실행된 docker 종료 및 volume 삭제<br/>
+`./run.sh up-raft` : quorum(consensus : raft)으로 실행
 
 ### 실행 환경
 node version : v10.7.0<br/>
