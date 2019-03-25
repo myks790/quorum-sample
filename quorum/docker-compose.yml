@@ -1,9 +1,7 @@
 # The following environment variables are substituted if present
 # * QUORUM_CONSENSUS: default to istanbul
 # * QUORUM_DOCKER_IMAGE: default to quorumengineering/quorum:2.2.1
-# * QUORUM_TX_MANAGER_DOCKER_IMAGE: default to quorumengineering/tessera:0.7.3
-# To use Constellation, set QUORUM_TX_MANAGER_DOCKER_IMAGE to Constellation docker image,
-# e.g.: QUORUM_TX_MANAGER_DOCKER_IMAGE=quorumengineering/constellation:0.3.2 docker-compose up -d
+# * QUORUM_TX_MANAGER_DOCKER_IMAGE: default to quorumengineering/tessera:0.8
 version: "3.7"
 x-quorum-def:
   &quorum-def
