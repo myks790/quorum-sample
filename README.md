@@ -1,11 +1,11 @@
-#quorum-sample
+# quorum-sample
 ## Quick start
 프로젝트 루트에서<br/>
 `./run.sh first-start` 명령어 실행<br/>
 node version : v10.7.0<br/>
 npm version :  v6.8.0
 ## 폴더 소개
-### istanbul 폴더
+### quorum 폴더
 `docker-compose up`으로 실행<br/>
 테스트 노드 실행 관련 파일이 존재<br/>
 * #### 3nodes
@@ -17,18 +17,18 @@ gath에 쓰임 <br/>
 
 ---
 ### sample 폴더
-* #### ray-token
+* #### [ray-token](./sample/ray-token)
 truffle, openzeppelin 사용<br/>
 erc20, 721 생성, 배포<br/>
-* #### viewer-react
+* #### [viewer-react](./sample/viewer-react)
 ray-token에서 생성한 토큰 정보 확인, 교환 기능 제공<br/>
 
 ---
 ### stepByStep 폴더
 테스트 노드 없이 처음부터 생성하는 방법 관련 
-* #### keyGenerator
+* #### [keyGenerator](./stepByStep/keyGenerator)
 nodeKey와 geth 계정 생성 관련<br/> 
-* #### extraData
+* #### [extraData](./stepByStep/extraData)
 genesis 파일 생성에 쓰이는 extraData 관련<br/>
 
 ---
