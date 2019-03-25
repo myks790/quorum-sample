@@ -1,9 +1,10 @@
 #quorum-sample
-consensus : istanbul <br/>
-참고 : https://github.com/jpmorganchase/quorum-examples 
-<br/><br/>
+## Quick start
+프로젝트 루트에서<br/>
+`./run.sh first-start` 명령어 실행<br/>
+node version : v10.7.0<br/>
+npm version :  v6.8.0
 ## 폴더 소개
-
 ### istanbul 폴더
 `docker-compose up`으로 실행<br/>
 테스트 노드 실행 관련 파일이 존재<br/>
@@ -40,3 +41,7 @@ transacion manager에서 장애가 났을 경우 복구 확인
 transaction manager인 tessera의 db내용 확인
 * #### viewLevelDB
 quorum chain 내용 확인 관련
+
+
+---
+참고 : https://github.com/jpmorganchase/quorum-examples 
