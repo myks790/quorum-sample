@@ -81,7 +81,7 @@ x-tx-manager-def:
     - "8082"
   restart: "no"
   healthcheck:
-    test: ["CMD-SHELL", "[ -S /qdata/tm/tm.ipc ] || exit 1"]
+    test: ["CMD-SHELL", "[ -S /qdata/tm_ipc/tm.ipc ] || exit 1"]
     interval: 3s
     timeout: 3s
     retries: 20
