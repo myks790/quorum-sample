@@ -1,7 +1,10 @@
 ## 필요 모듈 설치
+### privateFor을 사용하려면 v4.1.15 사용(Solidity v0.4.25)
 npm install -g truffle@v4.1.15 <br/>
-truffle v5에서 quorum 합의 알고리즘을 raft로 하고 배포 할때 문제 있음(v5.0.4, v5.0.8만 확인)<br/>
-v5에서 quorum과 호환성이 깨짐<br/>
+### public만 쓸 경우 v5.0.10도 사용(Solidity v0.5.0)
+npm install -g truffle@v5.0.10 <br/>
+
+truffle v5에서 quorum 호환성 문제 있음<br/>
 issues : https://github.com/trufflesuite/truffle/issues/1657<br/>
 [v5.0.9](https://github.com/trufflesuite/truffle/releases/tag/v5.0.9)에서 일부 수정됨(privateFor은 안됨)<br/>
 https://truffleframework.com/docs/truffle/getting-started/working-with-quorum
