@@ -6,9 +6,18 @@ const Market = artifacts.require("Market");
 const ClaimHolder = artifacts.require("ClaimHolder");
 const ClaimHolderLibrary = artifacts.require("ClaimHolderLibrary");
 const KeyHolderLibrary = artifacts.require("KeyHolderLibrary");
+const ClaimHolderV2 = artifacts.require("ClaimHolderV2");
+const KeyManager = artifacts.require("KeyManager");
+const LicenseRepository = artifacts.require("LicenseRepository");
 
 module.exports = function (deployer, network, accounts) {
     return deployer.then(() => {
+        return deployer.deploy(KeyManager);
+    }).then(() => {
+        return deployer.deploy(ClaimHolderV2);
+    }).then(() => {
+        return deployer.deploy(LicenseRepository, ClaimHolderV2.address);
+    }).then(() => {
         return deployer.deploy(KeyHolderLibrary);
     }).then(() => {
         deployer.link(KeyHolderLibrary, ClaimHolderLibrary);

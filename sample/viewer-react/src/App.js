@@ -5,6 +5,7 @@ import ERCCheckComponent from "./components/ERCCheckComponent";
 import SliderbarComponent from "./components/SliderbarComponent";
 import StressTestComponent from "./components/StressTestComponent";
 import ERC725Component from "./components/ERC725Component";
+import L1R2ScenarioComponent from "./components/l1r2/L1R2ScenarioComponent";
 
 
 const accountInfo = {
@@ -38,6 +39,11 @@ const menuData = [
         title: "ERC725",
         path: '/erc725',
         contents: () => <ERC725Component accountsInfo={accountInfo}/>
+    },
+    {
+        title: "L1 R2 Scenario",
+        path: '/l1r2Scenario',
+        contents: () => <L1R2ScenarioComponent accountsInfo={accountInfo}/>
     },
 ];
 
@@ -76,6 +82,7 @@ class App extends Component {
                                 <Route path={menuData[1].path} component={menuData[1].contents}/>
                                 <Route path={menuData[2].path} component={menuData[2].contents}/>
                                 <Route path={menuData[3].path} component={menuData[3].contents}/>
+                                <Route path={menuData[4].path} component={menuData[4].contents}/>
                             </Switch>
                         </section>
                     </div>

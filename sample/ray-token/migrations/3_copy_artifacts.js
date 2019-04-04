@@ -6,6 +6,9 @@ const Market = artifacts.require("Market");
 const ClaimHolder = artifacts.require("ClaimHolder");
 const ClaimHolderLibrary = artifacts.require("ClaimHolderLibrary");
 const KeyHolderLibrary = artifacts.require("KeyHolderLibrary");
+const ClaimHolderV2 = artifacts.require("ClaimHolderV2");
+const LicenseRepository = artifacts.require("LicenseRepository");
+const KeyManager = artifacts.require("KeyManager");
 
 const shell = require('child_process').execSync;
 
@@ -27,7 +30,10 @@ module.exports = function (deployer) {
         "\"Market\":\"" + Market.address + "\"," +
         "\"ClaimHolder\":\"" + ClaimHolder.address + "\"," +
         "\"ClaimHolderLibrary\":\"" + ClaimHolderLibrary.address + "\"," +
-        "\"KeyHolderLibrary\":\"" + KeyHolderLibrary.address + "\"" +
+        "\"KeyHolderLibrary\":\"" + KeyHolderLibrary.address + "\"," +
+        "\"ClaimHolderV2\":\"" + ClaimHolderV2.address + "\"," +
+        "\"LicenseRepository\":\"" + LicenseRepository.address + "\"," +
+        "\"KeyManager\":\"" + KeyManager.address + "\"" +
         "}",
         function (err) {
             console.log(err)
