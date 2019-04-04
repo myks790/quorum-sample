@@ -1,8 +1,9 @@
 pragma solidity 0.5.0;
 
 import "./ClaimHolderV2.sol";
+import "./ClaimVerifier.sol";
 
-contract LicenseRepository  {
+contract LicenseRepository {
 
     ClaimHolderV2 public trustedClaimHolder;
 
@@ -18,7 +19,8 @@ contract LicenseRepository  {
 
     uint256 private nonce;
 
-    constructor(address _trustedClaimHolder) public{
+    constructor(address _trustedClaimHolder)
+    public{
         trustedClaimHolder = ClaimHolderV2(_trustedClaimHolder);
     }
 
@@ -35,11 +37,13 @@ contract LicenseRepository  {
     }
 
 
+    function getLicense(bytes32 key) public returns (string memory name, uint32 age, bool expired) {
 
-    function getLicense(bytes32 key) public returns (string memory name, uint32 age) {
+        bool e = !trustedClaimHolder.keyHasPurpose(bytes32(uint256(msg.sender) << 96), 1);
         return (
         licenses[key].name,
-        licenses[key].age
+        licenses[key].age,
+        e
         );
     }
 

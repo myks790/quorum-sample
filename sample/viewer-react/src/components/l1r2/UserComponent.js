@@ -174,22 +174,9 @@ class L1R2ScenarioComponent extends Component {
 
     viewLicense = async () => {
         const driverLicenseClaimIDs = await this.personalHolder.methods.getClaimIdsByTopic(CLAIM_TOPIC.DRIVING_LICENSE).call();
-        console.log(driverLicenseClaimIDs)
         const claim = await this.personalHolder.methods.getClaim(driverLicenseClaimIDs[0]).call();
-        console.log(claim)
-        const license = await this.licenseRepository.methods.getLicense(claim.data).call();
+        const license = await this.licenseRepository.methods.getLicense(claim.data).call({from:this.personalHolder.options.address});
         console.log(license)
-        // const licenseKeys = await this.personalHolder.methods.getKeysByPurpose(KEY_PURPOSES.DRIVING_LICENSE).call();
-        // console.log('licenseKeys')
-        // console.log(licenseKeys)
-        // const licenseKey = await this.personalHolder.methods.getKey(licenseKeys[0]).call();
-        // console.log('licenseKey')
-        // const key = this.personalHolder.options.address
-        // const license = await this.licenseRepository.methods.getLicense(key).call();
-        // const aa = await this.existLicenseKey(this.state.licenseKey);
-        // console.log(aa)
-        // console.log(license)
-
     };
 
     render() {
