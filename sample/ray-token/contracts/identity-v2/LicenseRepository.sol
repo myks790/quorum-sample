@@ -36,10 +36,10 @@ contract LicenseRepository  {
 
 
 
-    function getLicense(address addr) public returns (string memory name, uint32 age) {
+    function getLicense(bytes32 key) public returns (string memory name, uint32 age) {
         return (
-        licenses[ids[addr]].name,
-        licenses[ids[addr]].age
+        licenses[key].name,
+        licenses[key].age
         );
     }
 
