@@ -17,7 +17,8 @@ const CLAIM_SCHEMES = {
 
 const KEY_PURPOSES = {
     "MANAGEMENT": 1,
-    "EXECUTION": 2
+    "EXECUTION": 2,
+    "CLAIM_SIGNER_KEY": 3
 };
 
 const KEY_TYPES = {
@@ -103,6 +104,29 @@ class L1R2ScenarioComponent extends Component {
         }
     };
 
+    addClaim = async (personalHolderAddr, signature, hexedData) => {
+        const addClaimABI = await this.claimHolder.methods
+            .addClaim(
+                CLAIM_TOPIC.DRIVING_LICENSE,
+                CLAIM_SCHEMES.ECDSA,
+                this.claimHolder.options.address,
+                signature,
+                hexedData,
+                "https://www.test.com/test/",
+            ).encodeABI();
+
+        await this.claimHolder.methods.execute(
+            personalHolderAddr,
+            0,
+            0,
+            addClaimABI
+        ).send({
+            gas: 4612388,
+            from: this.props.accountsInfo.account1.addr,
+        });
+        console.log('success : addClaim')
+    };
+
     registLicense = async (driverInfo) => {
         let result = await this.licenseRepository.methods.addLicense(driverInfo.personalHolderAddr, driverInfo.name, driverInfo.age).send({
             gas: 46123880,
@@ -120,9 +144,8 @@ class L1R2ScenarioComponent extends Component {
         await this.addClaimKey(driverInfo.personalHolderAddr);
 
         const sig = await this.sign(driverInfo.personalHolderAddr, licenseKey, hexedData);
+        await this.addClaim(driverInfo.personalHolderAddr, sig, hexedData);
         this.setState({keyList: this.state.keyList.concat([driverInfo.personalHolderAddr])});
-        this.props.msgQ.push('issueResult', {issuer: this.claimHolder.options.address, sig: sig, hexedData: hexedData});
-
     };
 
     render() {
@@ -149,7 +172,6 @@ class L1R2ScenarioComponent extends Component {
                     <br/>
                 </div>
             </div>
-
         );
     }
 }

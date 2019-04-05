@@ -30,7 +30,7 @@ contract ClaimHolderV2 is ERC735, KeyManager {
 
     function addClaim(uint256 _topic, uint256 _scheme, address _issuer, bytes memory _signature, bytes memory _data, string memory _uri) public returns (bytes32 claimRequestId){
         if (msg.sender != address(this)) {
-            require(keyHasPurpose(keccak256(abi.encodePacked(msg.sender)), 3), "Sender does not have claim signer key");
+            require(keyHasPurpose(keccak256(abi.encodePacked(msg.sender)), CLAIM_SIGNER_KEY), "Sender does not have claim signer key");
         }
 
         bytes32 claimId = keccak256(abi.encodePacked(_issuer, _topic));

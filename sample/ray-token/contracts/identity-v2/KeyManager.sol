@@ -7,6 +7,7 @@ contract KeyManager is ProxyAccount {
 
     uint256 public constant MANAGEMENT_KEY = 1;
     uint256 public constant EXECUTION_KEY = 2;
+    uint256 public constant CLAIM_SIGNER_KEY = 3;
 
     event KeyAdded(bytes32 indexed key, uint256 indexed purpose, uint256 indexed keyType);
     event KeyRemoved(bytes32 indexed key, uint256 indexed purpose, uint256 indexed keyType);
