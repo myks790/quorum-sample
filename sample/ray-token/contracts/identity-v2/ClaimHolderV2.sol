@@ -3,9 +3,16 @@ pragma solidity 0.5.0;
 import "../identity/ERC735.sol";
 import "./KeyManager.sol";
 
+/**
+ * Copyright (c) 2018 Origin Protocol Inc
+ * Released under the MIT License
+ * https://github.com/OriginProtocol/origin/blob/159cc75b93103b4564a5728c47a150c0e734a004/LICENSE
+ * Original Code
+ * https://github.com/OriginProtocol/origin/blob/159cc75b93103b4564a5728c47a150c0e734a004/origin-contracts/contracts/identity/ClaimHolderLibrary.sol
+ * modified by Kang SangHun
+ */
+
 contract ClaimHolderV2 is ERC735, KeyManager {
-
-
     mapping(bytes32 => Claim) byId;
     mapping(uint256 => bytes32[]) byTopic;
 
@@ -54,7 +61,7 @@ contract ClaimHolderV2 is ERC735, KeyManager {
 
     function removeClaim(bytes32 _claimId) public returns (bool success){
         if (msg.sender != address(this)) {
-            require(keyHasPurpose(keccak256(abi.encodePacked(msg.sender)), 1), "Sender does not have management key");
+            require(keyHasPurpose(keccak256(abi.encodePacked(msg.sender)), MANAGEMENT_KEY), "Sender does not have management key");
         }
 
         emit ClaimRemoved(

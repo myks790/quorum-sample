@@ -62,7 +62,8 @@ class L1R2ScenarioComponent extends Component {
         return signature;
     };
 
-    addClaimKey = async (claimKey) => {
+    addClaimKey = async (key) => {
+        const claimKey = this.web3.utils.keccak256(key);
         if (await this.existClaimKey(claimKey)) {
             console.log('The key already exists...');
             console.log('key : ' + claimKey);
@@ -81,15 +82,11 @@ class L1R2ScenarioComponent extends Component {
 
     existClaimKey = async (claimKey) => {
         const keyData = await this.claimHolder.methods.getKey(claimKey).call();
-        if(keyData.key.length > claimKey.length){
-            claimKey = claimKey.concat('000000000000000000000000000000').slice(0, keyData.key.length);
-        }
         return keyData.key.toLowerCase() === claimKey.toLowerCase();
     };
 
     removeClaimKey = async () => {
-        console.log(this.state.keyList)
-        const claimKey = this.state.keyList[this.state.keyList.length - 1];
+        const claimKey = this.web3.utils.keccak256(this.state.keyList[this.state.keyList.length - 1]);
         if (!await this.existClaimKey(claimKey)) {
             console.log('Not exists key');
         } else {
