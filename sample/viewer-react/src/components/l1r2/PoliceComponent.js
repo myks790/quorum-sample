@@ -25,18 +25,9 @@ const KEY_TYPES = {
     "ECDSA": 1
 };
 
-class L1R2ScenarioComponent extends Component {
-    static defaultProps = {
-        requestList: []
-    };
+class PoliceComponent extends Component {
 
     state = {
-        licenseKey: '',
-        personalHolder: '',
-        myHolderAddr: null,
-        holderBalance: 0,
-        signature: '0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-        hexedData: '0x00',
         requestList: [],
         keyList: []
     };
@@ -52,7 +43,6 @@ class L1R2ScenarioComponent extends Component {
     }
 
     sign = async (holderAddr, licenseKey, hexedData) => {
-        this.setState({hexedData: hexedData});
         const hashedDataToSign = this.web3.utils.soliditySha3(
             holderAddr,
             CLAIM_TOPIC.DRIVING_LICENSE,
@@ -99,7 +89,7 @@ class L1R2ScenarioComponent extends Component {
                 gas: 4612388,
             });
             this.state.keyList.pop()
-            this.setState({licenseKey: '', keyList: this.state.keyList.concat()});
+            this.setState({keyList: this.state.keyList.concat()});
             console.log('success : removeClaimKey')
         }
     };
@@ -176,4 +166,4 @@ class L1R2ScenarioComponent extends Component {
     }
 }
 
-export default L1R2ScenarioComponent;
+export default PoliceComponent;

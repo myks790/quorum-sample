@@ -20,16 +20,9 @@ const KEY_TYPES = {
     "ECDSA": 1
 };
 
-class L1R2ScenarioComponent extends Component {
+class UserComponent extends Component {
     state = {
-        licenseKey: '',
         personalHolder: '',
-        myHolderAddr: null,
-        holderBalance: 0,
-        signature: '0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-        hexedData: '0x00',
-        requestList: [],
-        keyList: []
     };
 
     constructor(props) {
@@ -88,7 +81,6 @@ class L1R2ScenarioComponent extends Component {
 
     render() {
         return (
-
             <div className="box">
                 <div className="box-header with-border">
                     <h3 className="box-title">이용자(account3)</h3>
@@ -109,4 +101,4 @@ class L1R2ScenarioComponent extends Component {
     }
 }
 
-export default L1R2ScenarioComponent;
+export default UserComponent;
