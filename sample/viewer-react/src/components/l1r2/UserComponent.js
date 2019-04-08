@@ -1,24 +1,12 @@
 import React, {Component} from 'react';
 import Web3 from "web3";
 
+import {CLAIM_SCHEMES, CLAIM_TOPIC, KEY_PURPOSES, KEY_TYPES} from "./CommonVariable"
+
 const ContractsAddress = require('./../../contracts/ContractsAddress.json');
 const ClaimHolderV2 = require('./../../contracts/ClaimHolderV2.json');
 const LicenseRepository = require('./../../contracts/LicenseRepository.json');
 
-const CLAIM_TOPIC = {
-    "RAY_TOKEN": 7,
-    "DRIVING_LICENSE": 8,
-};
-
-const KEY_PURPOSES = {
-    "MANAGEMENT": 1,
-    "EXECUTION": 2,
-    "CLAIM_SIGNER_KEY": 3
-};
-
-const KEY_TYPES = {
-    "ECDSA": 1
-};
 
 class UserComponent extends Component {
     state = {
@@ -72,11 +60,69 @@ class UserComponent extends Component {
         });
     };
 
-    viewLicense = async () => {
+    getLicenseKey = async () => {
         const driverLicenseClaimIDs = await this.personalHolder.methods.getClaimIdsByTopic(CLAIM_TOPIC.DRIVING_LICENSE).call();
         const claim = await this.personalHolder.methods.getClaim(driverLicenseClaimIDs[0]).call();
-        const license = await this.licenseRepository.methods.getLicense(claim.data).call({from: this.personalHolder.options.address});
+        return claim.data;
+    };
+
+    viewLicense = async () => {
+        const licenseKey = await this.getLicenseKey();
+        const license = await this.licenseRepository.methods.getLicense(licenseKey).call({from: this.personalHolder.options.address});
         console.log(license)
+    };
+
+
+    addClaim = async (personalHolderAddr, signature, data) => {
+        const addClaimABI = await this.claimHolder.methods
+            .addClaim(
+                CLAIM_TOPIC.DRIVING_LICENSE,
+                CLAIM_SCHEMES.CUSTOM_LICENSE,
+                personalHolderAddr,
+                signature,
+                data,
+                "https://www.test.com/test/",
+            ).encodeABI();
+
+        const result = await this.personalHolder.methods.execute(
+            personalHolderAddr,
+            0,
+            0,
+            addClaimABI
+        ).send({
+            gas: 4612388,
+            from: this.props.accountsInfo.account3.addr,
+        });
+        console.log('success : addClaim');
+        return result.events.ClaimAdded.returnValues.claimId;
+    };
+
+    sign = async (holderAddr, hexedData) => {
+        const hashedDataToSign = this.web3.utils.soliditySha3(
+            holderAddr,
+            CLAIM_TOPIC.DRIVING_LICENSE,
+            hexedData,
+        );
+        const signature = await this.web3.eth.sign(hashedDataToSign, this.props.accountsInfo.account1.addr);
+        return signature;
+    };
+
+    issueAndDelivery = async () => {
+        const licenseKey = await this.getLicenseKey();
+
+        // const hexedData = this.web3.utils.asciiToHex(`{
+        //     LicenseKey:${licenseKey},
+        //     selectedInfo:"age",
+        //     ExpirationDate:"9999-12-01"
+        //     }`);
+
+        //hacking
+        const hexedData = this.web3.eth.abi.encodeParameters(['bytes32', 'string', 'string'],[licenseKey, 'age', "9999-12-01"]);
+
+        const sig = await this.sign(this.state.personalHolder, hexedData);
+
+        const claimId = await this.addClaim(this.state.personalHolder, sig, hexedData);
+        this.props.msgQForMarket.push('claims',{holderAddr:this.state.personalHolder, claimId:claimId});
     };
 
     render() {
@@ -95,6 +141,8 @@ class UserComponent extends Component {
                     holder주소 : 위와 같음, 이름 : ray, 나이 : 27 <button onClick={this.requestLicense}>발급 요청</button>
                     <br/>
                     <button onClick={this.viewLicense}>라이센스 보기</button>
+                    <br/>
+                    나이만 포함된 Claim : <button onClick={this.issueAndDelivery}>자체 발행 & 마켓에 전달</button>
                 </div>
             </div>
         );

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PoliceComponent from "./PoliceComponent";
 import UserComponent from "./UserComponent";
+import MarketComponent from "./MarketComponent";
 
 class MsgQ {
     constructor() {
@@ -44,20 +45,11 @@ class MsgQ {
 
 
 class L1R2ScenarioComponent extends Component {
-    state = {
-        licenseKey: '',
-        personalHolder: '',
-        myHolderAddr: null,
-        holderBalance: 0,
-        signature: '0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-        hexedData: '0x00',
-        requestList: [],
-        keyList: []
-    };
 
     constructor(props) {
         super(props);
         this.msgQ = new MsgQ();
+        this.msgQForMarket = new MsgQ();
     }
 
     render() {
@@ -71,8 +63,9 @@ class L1R2ScenarioComponent extends Component {
                         https://w3c.github.io/vc-use-cases/
                     </div>
                 </div>
-                <UserComponent msgQ={this.msgQ} {...this.props}/>
+                <UserComponent msgQ={this.msgQ} msgQForMarket={this.msgQForMarket} {...this.props}/>
                 <PoliceComponent msgQ={this.msgQ} {...this.props}/>
+                <MarketComponent msgQForMarket={this.msgQForMarket} {...this.props}/>
             </>
         );
     }

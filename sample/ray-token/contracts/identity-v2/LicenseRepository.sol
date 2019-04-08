@@ -4,6 +4,7 @@ import "./ClaimHolderV2.sol";
 import "./ClaimVerifier.sol";
 
 
+//개인 정보가 존재하고 public체인 상에서 모든 데이터를 볼 수 있기 때문에 다른 private 블록체인 또는 서버로 이동 필요
 contract LicenseRepository {
 
     ClaimHolderV2 public trustedClaimHolder;
@@ -47,5 +48,26 @@ contract LicenseRepository {
         );
     }
 
+    //블록체인에서 데이터만 저장하고
+    //블록체인보다 접근 제어가 되는 서버에서 조립 반환이 더 옳다???
+    function getLicense(address _personalHolder, bytes32 claimId) public returns (string memory, int32, string memory){
+        bool e = !trustedClaimHolder.keyHasPurpose(keccak256(abi.encodePacked(_personalHolder)), trustedClaimHolder.MANAGEMENT_KEY());
+        require(e == false);
 
+        ClaimHolderV2 personalHolder = ClaimHolderV2(_personalHolder);
+
+        (uint256 topic, uint256 scheme, address issuer, bytes memory signature, bytes memory data, string memory uri) = personalHolder.getClaim(claimId);
+
+        string memory name = '';
+        int32 age = -1;
+        (bytes32 licenseKey,string memory selectedInfo, string memory expirationDate) = abi.decode(data, (bytes32, string, string));
+        if(keccak256(abi.encodePacked(selectedInfo)) == keccak256('name')){
+            name = licenses[licenseKey].name;
+        }
+        if(keccak256(abi.encodePacked(selectedInfo)) == keccak256('age')){
+            age = int32(licenses[licenseKey].age);
+        }
+
+        return (name, age, expirationDate);
+    }
 }

@@ -1,29 +1,12 @@
 import React, {Component} from 'react';
 import Web3 from "web3";
 
+import {CLAIM_TOPIC, CLAIM_SCHEMES, KEY_PURPOSES, KEY_TYPES} from "./CommonVariable"
+
 const ContractsAddress = require('./../../contracts/ContractsAddress.json');
 const ClaimHolderV2 = require('./../../contracts/ClaimHolderV2.json');
 const LicenseRepository = require('./../../contracts/LicenseRepository.json');
 
-const CLAIM_TOPIC = {
-    "RAY_TOKEN": 7,
-    "DRIVING_LICENSE": 8,
-};
-
-const CLAIM_SCHEMES = {
-    "ECDSA": 1,
-    "RSA": 2
-};
-
-const KEY_PURPOSES = {
-    "MANAGEMENT": 1,
-    "EXECUTION": 2,
-    "CLAIM_SIGNER_KEY": 3
-};
-
-const KEY_TYPES = {
-    "ECDSA": 1
-};
 
 class PoliceComponent extends Component {
 
@@ -42,14 +25,13 @@ class PoliceComponent extends Component {
         })
     }
 
-    sign = async (holderAddr, licenseKey, hexedData) => {
+    sign = async (holderAddr, hexedData) => {
         const hashedDataToSign = this.web3.utils.soliditySha3(
             holderAddr,
             CLAIM_TOPIC.DRIVING_LICENSE,
             hexedData,
         );
         const signature = await this.web3.eth.sign(hashedDataToSign, this.props.accountsInfo.account1.addr);
-        this.setState({signature: signature});
         return signature;
     };
 
@@ -62,7 +44,7 @@ class PoliceComponent extends Component {
             await this.claimHolder.methods.addKey(
                 claimKey,
                 KEY_PURPOSES.MANAGEMENT,
-                KEY_TYPES.ECDSA,
+                KEY_TYPES.LICENSE,
             ).send({
                 from: this.props.accountsInfo.account1.addr,
                 gas: 4612388,
@@ -94,14 +76,14 @@ class PoliceComponent extends Component {
         }
     };
 
-    addClaim = async (personalHolderAddr, signature, hexedData) => {
+    addClaim = async (personalHolderAddr, signature, licensKey) => {
         const addClaimABI = await this.claimHolder.methods
             .addClaim(
                 CLAIM_TOPIC.DRIVING_LICENSE,
-                CLAIM_SCHEMES.ECDSA,
+                CLAIM_SCHEMES.LICENSE_KEY,
                 this.claimHolder.options.address,
                 signature,
-                hexedData,
+                licensKey,
                 "https://www.test.com/test/",
             ).encodeABI();
 
@@ -114,6 +96,7 @@ class PoliceComponent extends Component {
             gas: 4612388,
             from: this.props.accountsInfo.account1.addr,
         });
+
         console.log('success : addClaim')
     };
 
@@ -133,7 +116,7 @@ class PoliceComponent extends Component {
 
         await this.addClaimKey(driverInfo.personalHolderAddr);
 
-        const sig = await this.sign(driverInfo.personalHolderAddr, licenseKey, hexedData);
+        const sig = await this.sign(driverInfo.personalHolderAddr, hexedData);
         await this.addClaim(driverInfo.personalHolderAddr, sig, hexedData);
         this.setState({keyList: this.state.keyList.concat([driverInfo.personalHolderAddr])});
     };
@@ -158,7 +141,7 @@ class PoliceComponent extends Component {
                 <div className="box-footer">
                     자격 확인 후 <button onClick={this.issue}>발급</button><br/>
                     <button onClick={this.removeClaimKey}>removeClaimKey</button>
-                    : 발급된 라이센스 키 삭제<br/>
+                    : 발급된 라이센스 claimKey 삭제<br/>
                     <br/>
                 </div>
             </div>
